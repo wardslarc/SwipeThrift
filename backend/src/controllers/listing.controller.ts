@@ -20,7 +20,7 @@ export class ListingController {
       // Parse JSON images for frontend convenience
       const formattedFeed = feed.map(item => ({
         ...item,
-        images: JSON.parse(item.images as string)
+        images: typeof item.images === 'string' ? JSON.parse(item.images) : item.images
       }));
 
       res.status(200).json(formattedFeed);
@@ -94,7 +94,7 @@ export class ListingController {
       // Format for frontend
       const formattedListing = {
         ...listing,
-        images: JSON.parse(listing.images as string)
+        images: typeof listing.images === 'string' ? JSON.parse(listing.images) : listing.images
       };
 
       res.status(201).json(formattedListing);
@@ -119,7 +119,7 @@ export class ListingController {
       const listings = await ListingService.getMyListings(userId);
       const formatted = listings.map(item => ({
         ...item,
-        images: JSON.parse(item.images as string)
+        images: typeof item.images === 'string' ? JSON.parse(item.images) : item.images
       }));
 
       res.status(200).json(formatted);
