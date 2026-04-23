@@ -25,6 +25,19 @@ export class AuthController {
       const passwordHash = await bcrypt.hash(password, 10);
       const user = await AuthService.createUser(username, passwordHash, email);
 
+      const token = jwt.sign(
+        { id: user.id, username: user.username, role: user.role },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
       res.status(201).json(user);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -59,9 +72,15 @@ export class AuthController {
         { expiresIn: '24h' }
       );
 
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      });
+
       res.status(200).json({
         user: AuthService.mapToDTO(user),
-        token,
       });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);

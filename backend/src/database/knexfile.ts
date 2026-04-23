@@ -14,11 +14,11 @@ const config: { [key: string]: Knex.Config } = {
       port: Number(process.env.DB_PORT) || 3306,
     },
     migrations: {
-      directory: './src/database/migrations',
+      directory: './migrations',
       extension: 'ts',
     },
     seeds: {
-      directory: './src/database/seeds',
+      directory: './seeds',
       extension: 'ts',
     },
   },

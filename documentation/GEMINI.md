@@ -23,6 +23,7 @@
    - Research -> Strategy -> Execution (Plan -> Act -> Validate).
    - Verify every change locally (linting, types, functionality).
    - after each task stage all the changes to a commit follow the proper commit standards in the AGENTS.md 
+   -Always run lint on backend and frontend.
 
 ## 🚀 Development Phases (MVP Focused)
 
@@ -35,9 +36,9 @@
 - [x] **Epic 1 (Economy):** Daily login bonus logic (+4 credits).
 
 ### Phase 2: Discovery & Swiping
-- [ ] **Epic 2 (Discovery):** `GET /api/listings/feed` (exclude swiped items).
-- [ ] **Epic 2 (Swiping):** Framer Motion `CardStack` and `POST /api/swipe`.
-- [ ] **Epic 4 (Auto-Chat):** Right swipe auto-conversation creation.
+- [x] **Epic 2 (Discovery):** `GET /api/listings/feed` (exclude swiped items).
+- [x] **Epic 2 (Swiping):** Framer Motion `CardStack` and `POST /api/swipe`.
+- [x] **Epic 4 (Auto-Chat):** Right swipe auto-conversation creation.
 
 ### Phase 3: Selling & Management
 - [ ] **Epic 3 (Selling):** `POST /api/listings` (20 credits deduction).
