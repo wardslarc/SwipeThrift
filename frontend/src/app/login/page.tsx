@@ -55,10 +55,16 @@ function LoginContent() {
       </div>
 
       <div className="brutalist-card relative z-10 w-full max-w-md p-8 bg-white/95 backdrop-blur-sm">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-black uppercase tracking-tighter text-black mb-2">
-            Swipe<span className="text-[var(--secondary)]">Thrift</span>
-          </h1>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <div className="relative w-48 h-12 mb-2">
+            <Image
+              src="/swipethrift.png"
+              alt="SwipeThrift Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
           <p className="text-zinc-600 font-medium italic">
             intentional thrifting for the bold.
           </p>
