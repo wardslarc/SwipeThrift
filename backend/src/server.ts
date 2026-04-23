@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import path from 'path';
 import authRoutes from './routes/auth.routes';
 import listingRoutes from './routes/listing.routes';
 
@@ -17,6 +18,9 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes);

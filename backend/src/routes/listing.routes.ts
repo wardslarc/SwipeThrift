@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ListingController } from '../controllers/listing.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
+import { upload } from '../utils/upload';
 
 const router = Router();
 
@@ -9,7 +10,7 @@ router.use(authenticateToken);
 
 router.get('/feed', ListingController.getFeed);
 router.post('/swipe', ListingController.swipe);
-router.post('/', ListingController.create);
+router.post('/', upload.single('image'), ListingController.create);
 router.get('/my', ListingController.getMyListings);
 router.patch('/:id/sold', ListingController.markAsSold);
 

@@ -67,27 +67,37 @@ export class ListingController {
   static async create(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
-      const { title, price, description, category, images } = req.body;
+      const { title, price, description, category } = req.body;
+      const file = req.file;
 
       if (!userId) {
         res.status(401).json({ error: 'Unauthorized' });
         return;
       }
 
-      if (!title || !price || !images || !Array.isArray(images) || images.length === 0) {
-        res.status(400).json({ error: 'Title, price, and at least one image are required' });
+      if (!title || !price || !file) {
+        res.status(400).json({ error: 'Title, price, and image are required' });
         return;
       }
+
+      // Store relative path to access via static middleware
+      const imageUrl = `/uploads/${file.filename}`;
 
       const listing = await ListingService.createListing(userId, {
         title,
         price: Number(price),
         description,
         category,
-        images
+        images: [imageUrl]
       });
 
-      res.status(201).json(listing);
+      // Format for frontend
+      const formattedListing = {
+        ...listing,
+        images: JSON.parse(listing.images as string)
+      };
+
+      res.status(201).json(formattedListing);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       const status = message.includes('Insufficient credits') ? 403 : 500;

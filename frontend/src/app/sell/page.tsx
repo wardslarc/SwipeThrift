@@ -11,7 +11,7 @@ export default function SellPage() {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -36,19 +36,24 @@ export default function SellPage() {
       return;
     }
 
+    if (!file) {
+      setError("PLEASE SELECT AN IMAGE.");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
 
     try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("price", price);
+      formData.append("description", description);
+      formData.append("image", file);
+
       const response = await fetch("/api/listings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          price: parseFloat(price),
-          description,
-          images: [imageUrl], // MVP uses 1 image in array
-        }),
+        body: formData, // Browser sets Content-Type to multipart/form-data automatically
       });
 
       const data = await response.json();
@@ -63,7 +68,7 @@ export default function SellPage() {
       setTitle("");
       setPrice("");
       setDescription("");
-      setImageUrl("");
+      setFile(null);
       
       setTimeout(() => setSuccess(false), 5000);
     } catch (err: unknown) {
@@ -133,14 +138,13 @@ export default function SellPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-black uppercase mb-2">Image URL</label>
+              <label className="block text-xs font-black uppercase mb-2">Image</label>
               <div className="relative">
                 <input
-                  type="url"
-                  className="brutalist-input pl-10"
-                  placeholder="HTTP://..."
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
+                  type="file"
+                  accept="image/*"
+                  className="brutalist-input pl-10 pt-2.5"
+                  onChange={(e) => setFile(e.target.files?.[0] || null)}
                   required
                   disabled={isLoading}
                 />

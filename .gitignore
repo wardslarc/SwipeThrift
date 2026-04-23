@@ -12,6 +12,7 @@ frontend/out/
 # Backend
 backend/dist/
 backend/node_modules/
+backend/uploads/
 
 # OS files
 .DS_Store
