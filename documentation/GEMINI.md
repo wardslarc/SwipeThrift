@@ -30,6 +30,7 @@
 - [x] Restructure directory into `frontend/`, `backend/`, and `documentation/`.
 - [x] Initialize Backend with TypeScript and Express.
 - [x] Create `docker-compose.yml` and service Dockerfiles.
+- [x] Setup Nginx Reverse Proxy (Unified entry point).
 - [x] **Epic 1 (Onboarding):** Implement JWT Auth & Register (30 credits bonus).
 - [x] **Epic 1 (Economy):** Daily login bonus logic (+4 credits).
 
