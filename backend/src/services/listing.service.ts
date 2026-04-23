@@ -87,4 +87,15 @@ export class ListingService {
       .where({ id: listingId, seller_id: userId })
       .update({ status: 'SOLD' });
   }
+
+  /**
+   * Record a swipe (LEFT or RIGHT) on a listing.
+   */
+  static async recordSwipe(userId: string, listingId: string, direction: 'LEFT' | 'RIGHT'): Promise<void> {
+    await db('swipes').insert({
+      user_id: userId,
+      listing_id: listingId,
+      direction
+    });
+  }
 }
