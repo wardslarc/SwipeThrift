@@ -51,6 +51,7 @@ export default function SwipeCard({ listing, onSwipe, isFront }: SwipeCardProps)
           src={listing.images[0] || "/next.svg"}
           alt={listing.title}
           fill
+          sizes="(max-width: 768px) 100vw, 384px"
           className="object-cover pointer-events-none"
         />
 

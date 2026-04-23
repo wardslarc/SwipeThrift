@@ -49,6 +49,7 @@ function LoginContent() {
           src="/bg.png"
           alt="Background"
           fill
+          sizes="100vw"
           className="object-cover opacity-40"
           priority
         />
@@ -61,6 +62,7 @@ function LoginContent() {
               src="/swipethrift.png"
               alt="SwipeThrift Logo"
               fill
+              sizes="(max-width: 768px) 100vw, 288px"
               className="object-contain"
               priority
             />

@@ -90,7 +90,13 @@ export default function ProfilePage() {
             {listings.map((item) => (
               <div key={item.id} className={`brutalist-card p-4 flex gap-4 ${item.status === 'SOLD' ? 'opacity-60 grayscale' : 'bg-white'}`}>
                 <div className="relative w-20 h-20 border-2 border-black flex-shrink-0">
-                  <Image src={item.images[0]} alt={item.title} fill className="object-cover" />
+                  <Image 
+                    src={item.images[0]} 
+                    alt={item.title} 
+                    fill 
+                    sizes="80px"
+                    className="object-cover" 
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-black uppercase truncate text-sm">{item.title}</h3>

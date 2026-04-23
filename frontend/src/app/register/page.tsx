@@ -48,6 +48,7 @@ export default function RegisterPage() {
           src="/bg.png"
           alt="Background"
           fill
+          sizes="100vw"
           className="object-cover opacity-40"
           priority
         />
