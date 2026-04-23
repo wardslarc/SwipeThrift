@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import SwipeCard from "@/components/SwipeCard";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Sparkles, PlusSquare, MessageSquare, User } from "lucide-react";
 
 interface Listing {
@@ -127,18 +128,18 @@ export default function FeedPage() {
             <Sparkles size={20} strokeWidth={3} />
             <span className="text-[10px] font-black uppercase">Feed</span>
          </button>
-         <button className="flex-1 flex flex-col items-center justify-center gap-1 border-r-2 border-black text-zinc-400 hover:text-black transition-colors">
+         <Link href="/sell" className="flex-1 flex flex-col items-center justify-center gap-1 border-r-2 border-black text-zinc-400 hover:text-black transition-colors">
             <PlusSquare size={20} strokeWidth={2.5} />
             <span className="text-[10px] font-black uppercase">Sell</span>
-         </button>
+         </Link>
          <button className="flex-1 flex flex-col items-center justify-center gap-1 border-r-2 border-black text-zinc-400 hover:text-black transition-colors">
             <MessageSquare size={20} strokeWidth={2.5} />
             <span className="text-[10px] font-black uppercase">Chat</span>
          </button>
-         <button className="flex-1 flex flex-col items-center justify-center gap-1 text-zinc-400 hover:text-black transition-colors">
+         <Link href="/profile" className="flex-1 flex flex-col items-center justify-center gap-1 text-zinc-400 hover:text-black transition-colors">
             <User size={20} strokeWidth={2.5} />
             <span className="text-[10px] font-black uppercase">Me</span>
-         </button>
+         </Link>
       </nav>
     </main>
   );
