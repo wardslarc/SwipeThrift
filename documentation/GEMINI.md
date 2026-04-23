@@ -22,6 +22,7 @@
 3. **Workflow:**
    - Research -> Strategy -> Execution (Plan -> Act -> Validate).
    - Verify every change locally (linting, types, functionality).
+   - after each task stage all the changes to a commit follow the proper commit standards in the AGENTS.md 
 
 ## 🚀 Development Phases (MVP Focused)
 
@@ -29,7 +30,7 @@
 - [x] Restructure directory into `frontend/`, `backend/`, and `documentation/`.
 - [x] Initialize Backend with TypeScript and Express.
 - [x] Create `docker-compose.yml` and service Dockerfiles.
-- [ ] **Epic 1 (Onboarding):** Implement JWT Auth & Register (30 credits bonus).
+- [x] **Epic 1 (Onboarding):** Implement JWT Auth & Register (30 credits bonus).
 - [ ] **Epic 1 (Economy):** Daily login bonus logic (+4 credits).
 
 ### Phase 2: Discovery & Swiping
