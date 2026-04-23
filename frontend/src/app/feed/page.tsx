@@ -67,7 +67,7 @@ export default function FeedPage() {
   return (
     <main className="min-h-screen bg-[var(--background)] flex flex-col pb-24">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[var(--background)] p-4 border-b-2 border-black flex justify-between items-center shadow-[0_2px_0_0_rgba(0,0,0,1)]">
+      <header className="sticky top-0 z-40 bg-[var(--background)] p-4 border-b-2 border-black flex justify-between items-center shadow-[0_2px_0_0_rgba(0,0,0,1)]">
         <h1 className="text-xl font-black uppercase tracking-tighter">
           Swipe<span className="text-[var(--secondary)]">Thrift</span>
         </h1>
