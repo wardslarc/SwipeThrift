@@ -31,7 +31,7 @@
 - [x] Initialize Backend with TypeScript and Express.
 - [x] Create `docker-compose.yml` and service Dockerfiles.
 - [x] **Epic 1 (Onboarding):** Implement JWT Auth & Register (30 credits bonus).
-- [ ] **Epic 1 (Economy):** Daily login bonus logic (+4 credits).
+- [x] **Epic 1 (Economy):** Daily login bonus logic (+4 credits).
 
 ### Phase 2: Discovery & Swiping
 - [ ] **Epic 2 (Discovery):** `GET /api/listings/feed` (exclude swiped items).
