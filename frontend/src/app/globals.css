@@ -1,18 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --background: #fdf2f8; /* Very light pink */
-  --foreground: #2e1065; /* Deep violet */
-  --primary: #7c3aed;    /* Violet-600 */
-  --secondary: #db2777;  /* Pink-600 */
-  --accent: #f472b6;     /* Pink-400 */
+@theme {
+  --color-background: #fdf2f8; /* Very light pink */
+  --color-foreground: #2e1065; /* Deep violet */
+  --color-primary: #7c3aed;    /* Violet-600 */
+  --color-secondary: #db2777;  /* Pink-600 */
+  --color-accent: #f472b6;     /* Pink-400 */
 }
 
 @layer base {
   body {
-    @apply bg-[var(--background)] text-[var(--foreground)] font-sans;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
@@ -22,14 +20,14 @@
   }
 
   .brutalist-button-primary {
-    @apply bg-[var(--primary)] text-white font-bold py-2 px-6 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-violet-700 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
+    @apply bg-primary text-white font-bold py-2 px-6 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-violet-700 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
   }
 
   .brutalist-button-secondary {
-    @apply bg-[var(--secondary)] text-white font-bold py-2 px-6 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-pink-700 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
+    @apply bg-secondary text-white font-bold py-2 px-6 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-pink-700 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
   }
 
   .brutalist-input {
-    @apply w-full p-3 border-2 border-black bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
+    @apply w-full p-3 border-2 border-black bg-white focus:outline-none focus:ring-2 focus:ring-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
   }
 }

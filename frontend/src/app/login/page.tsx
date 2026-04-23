@@ -1,17 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const registered = searchParams.get("registered");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic for login will go here
-    console.log("Login attempt:", { username, password });
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Invalid credentials");
+      }
+
+      // Success! Token is set in HTTP-only cookie by backend
+      router.push("/feed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to connect to server");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -25,8 +52,6 @@ export default function LoginPage() {
           className="object-cover opacity-40"
           priority
         />
-        {/* Color Overlay for the Violet/Pink theme */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-pink-500/20 mix-blend-multiply" />
       </div>
 
       <div className="brutalist-card relative z-10 w-full max-w-md p-8 bg-white/95 backdrop-blur-sm">
@@ -38,6 +63,18 @@ export default function LoginPage() {
             intentional thrifting for the bold.
           </p>
         </div>
+
+        {registered && (
+          <div className="mb-6 p-3 bg-green-100 border-2 border-green-600 text-green-600 font-bold text-sm uppercase">
+            Account created! Please log in.
+          </div>
+        )}
+
+        {error && (
+          <div className="mb-6 p-3 bg-red-100 border-2 border-red-600 text-red-600 font-bold text-sm uppercase">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
@@ -51,6 +88,7 @@ export default function LoginPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -65,11 +103,16 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
-          <button type="submit" className="w-full brutalist-button-primary">
-            Log In
+          <button 
+            type="submit" 
+            className="w-full brutalist-button-primary disabled:opacity-50"
+            disabled={isLoading}
+          >
+            {isLoading ? "LOGGING IN..." : "LOG IN"}
           </button>
         </form>
 
@@ -86,5 +129,13 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-bold">LOADING...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

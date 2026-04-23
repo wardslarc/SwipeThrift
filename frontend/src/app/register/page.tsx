@@ -3,16 +3,41 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic for registration will go here
-    console.log("Register attempt:", { username, email, password });
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email: email || null, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Something went wrong");
+      }
+
+      // Success! Redirect to login
+      router.push("/login?registered=true");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to connect to server");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -26,7 +51,6 @@ export default function RegisterPage() {
           className="object-cover opacity-40"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-pink-500/20 mix-blend-multiply" />
       </div>
 
       <div className="brutalist-card relative z-10 w-full max-w-md p-8 bg-white/95 backdrop-blur-sm">
@@ -40,6 +64,12 @@ export default function RegisterPage() {
         </div>
 
         <form onSubmit={handleRegister} className="space-y-6">
+          {error && (
+            <div className="p-3 bg-red-100 border-2 border-red-600 text-red-600 font-bold text-sm uppercase">
+              {error}
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-bold uppercase mb-2">
               Username
@@ -51,12 +81,13 @@ export default function RegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
           <div>
             <label className="block text-sm font-bold uppercase mb-2">
-              Email (Optional)
+              Email Address
             </label>
             <input
               type="email"
@@ -64,6 +95,8 @@ export default function RegisterPage() {
               placeholder="king@thrift.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
             />
           </div>
 
@@ -78,11 +111,16 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
-          <button type="submit" className="w-full brutalist-button-secondary">
-            Sign Up
+          <button 
+            type="submit" 
+            className="w-full brutalist-button-secondary disabled:opacity-50"
+            disabled={isLoading}
+          >
+            {isLoading ? "CREATING..." : "SIGN UP"}
           </button>
         </form>
 
