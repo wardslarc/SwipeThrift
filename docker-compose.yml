@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: swipethrift-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: swipethrift
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: devpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: swipethrift-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: swipethrift-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - uploads:/app/uploads
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_USER: dev
+      DB_PASSWORD: devpass
+      DB_NAME: swipethrift
+      REDIS_HOST: redis
+      PORT: 5000
+    depends_on:
+      - mysql
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: swipethrift-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  uploads:
