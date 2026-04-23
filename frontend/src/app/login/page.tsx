@@ -56,7 +56,7 @@ function LoginContent() {
 
       <div className="brutalist-card relative z-10 w-full max-w-md p-8 bg-white/95 backdrop-blur-sm">
         <div className="text-center mb-8 flex flex-col items-center">
-          <div className="relative w-48 h-12 mb-2">
+          <div className="relative w-72 h-24 mb-2">
             <Image
               src="/swipethrift.png"
               alt="SwipeThrift Logo"
