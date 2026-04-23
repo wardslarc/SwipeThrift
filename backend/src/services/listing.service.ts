@@ -29,13 +29,62 @@ export class ListingService {
   }
 
   /**
-   * Record a swipe (LEFT or RIGHT).
+   * Create a new listing and deduct 20 credits from the seller.
    */
-  static async recordSwipe(userId: string, listingId: string, direction: 'LEFT' | 'RIGHT'): Promise<void> {
-    await db('swipes').insert({
-      user_id: userId,
-      listing_id: listingId,
-      direction
-    }).onConflict(['user_id', 'listing_id']).ignore();
+  static async createListing(sellerId: string, data: { title: string; price: number; description?: string; category?: string; images: string[] }): Promise<Listing> {
+    return db.transaction(async (trx) => {
+      // 1. Check if user has enough credits (20)
+      const user = await trx('users').where({ id: sellerId }).first();
+      if (!user || user.credits < 20) {
+        throw new Error('Insufficient credits. You need 20 credits to post a listing.');
+      }
+
+      // 2. Create the listing
+      await trx('listings').insert({
+        seller_id: sellerId,
+        title: data.title,
+        price: data.price,
+        description: data.description || null,
+        category: data.category || null,
+        images: JSON.stringify(data.images),
+        status: 'ACTIVE'
+      });
+
+      // Get the newly created listing
+      const newListing = await trx('listings')
+        .where({ seller_id: sellerId, title: data.title })
+        .orderBy('created_at', 'desc')
+        .first();
+
+      // 3. Deduct credits
+      const newBalance = user.credits - 20;
+      await trx('users').where({ id: sellerId }).update({ credits: newBalance });
+
+      // 4. Log transaction
+      await trx('credit_transactions').insert({
+        user_id: sellerId,
+        amount: -20,
+        balance_after: newBalance,
+        reason: 'POST_FEE',
+      });
+
+      return newListing;
+    });
+  }
+
+  /**
+   * Fetch listings belonging to a specific seller.
+   */
+  static async getMyListings(sellerId: string): Promise<Listing[]> {
+    return db('listings').where({ seller_id: sellerId }).orderBy('created_at', 'desc');
+  }
+
+  /**
+   * Toggle listing status to SOLD.
+   */
+  static async markAsSold(userId: string, listingId: string): Promise<void> {
+    await db('listings')
+      .where({ id: listingId, seller_id: userId })
+      .update({ status: 'SOLD' });
   }
 }
